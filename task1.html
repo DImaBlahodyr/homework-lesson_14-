@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task 1</title>
+    <style>
+      body {
+        background-color: lightgray;
+        font-size: 20px;
+        font-family: 'Times New Roman', Times, serif;
+      }
+      .header {
+        max-width: 1425px;
+        margin: 0 auto;
+        background-color: rgb(31, 199, 131);
+        padding: 20px;
+        text-align: center;
+        border-radius: 10px;
+        font-size: 30px;
+      }
+      .header > p {
+        font-size: 24px;
+      }
+      .content {
+        max-width: 950px;
+        margin: 10px auto;
+        background-color: rgb(31, 199, 131);
+        border-radius: 10px;
+        text-align: center;
+        padding: 5px 0;
+        font-size: 24px;
+      }
+
+      .btn {
+        max-width: 300px;
+        margin: 30px auto;
+      }
+      .button {
+        display: block;
+        text-decoration: none;
+        color: black;
+        background-color: rgb(31, 199, 131);
+        margin: 15px 25px;
+        text-align: center;
+        font-size: 22px;
+        padding: 10px 20px;
+        border-radius: 7px;
+      }
+      .button:hover {
+        background-color: rgb(63, 112, 210);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <div>Задача 1</div>
+      <p>
+        . Описати масив об’єктів – сайтів розроблених компанією з властивостями
+      </p>
+      <p>
+        Знайти:<br />
+        1. загальну вартість усіх сайтів<br />
+        2. кількість сайтів, що було зроблено між 2000 та 2009 рр.<br />
+        3. кількість сайтів, де сума спонсорських вкладень була більшою за
+        100000<br />
+        4. створити загальний список усіх спонсорів (поки можуть повторюватись,
+        просто зібрати усі у масив)<br />
+        5. знайти рік, коли прибуток був найбільшим<br />
+      </p>
+    </div>
+    <div class="content">
+      <p>Відповідь до задачі:</p>
+      <script>
+        let arrSites = [
+          {
+            nameCompany: 'PMI',
+            owner: 'John Hammet',
+            sponsor: [
+              {
+                firstName: 'Adam',
+                secondName: 'Kenwey',
+                deposit: 50500,
+              },
+              {
+                firstName: 'Edward',
+                secondName: 'Patrick',
+                deposit: 23000,
+              },
+              {
+                firstName: 'Nick',
+                secondName: 'Davis',
+                deposit: 120000,
+              },
+            ],
+            year: 2002,
+            price: 193500,
+          },
+          {
+            nameCompany: 'PMI',
+            owner: 'John Hammet',
+            sponsor: [
+              {
+                firstName: 'Pitter',
+                secondName: 'Taylor',
+                deposit: 200000,
+              },
+            ],
+            year: 2007,
+            price: 200000,
+          },
+          {
+            nameCompany: 'Protech',
+            owner: 'John Hammet',
+            sponsor: [
+              {
+                firstName: 'Nick',
+                secondName: 'Davis',
+                deposit: 100000,
+              },
+              {
+                firstName: 'Edward',
+                secondName: 'Patrick',
+                deposit: 250000,
+              },
+            ],
+            year: 2009,
+            price: 350000,
+          },
+          {
+            nameCompany: 'Protech',
+            owner: 'John Hammet',
+            sponsor: [
+              {
+                firstName: 'Adam',
+                secondName: 'Kenwey',
+                deposit: 150000,
+              },
+              {
+                firstName: 'Pitter',
+                secondName: 'Taylor',
+                deposit: 300000,
+              },
+            ],
+            year: 2012,
+            price: 400000,
+          },
+        ]
+
+        //1) загальну вартість усіх сайтів
+
+        let totalPriceSites = arrSites.reduce(
+          (totalPrice, sitePrice) => totalPrice + sitePrice.price,
+          0
+        )
+
+        document.write(
+          `Загальна вартість усіх сайтів становить: ${totalPriceSites}<br><br>`
+        )
+
+        // 2) кількість сайтів, що було зроблено між 2000 та 2009 рр.
+
+        let countSites = arrSites.reduce((count, creation) => {
+          if (creation.year > 2000 && creation.year < 2009) return count + 1
+          else return count
+        }, 0)
+        document.write(
+          `Кількість сайтів, що було зроблено між 2000 та 2009 рр.: ${countSites}<br><br>`
+        )
+
+        // 3) кількість сайтів, де сума спонсорських вкладень була більшою за 100000
+        function investmentMore100Thousands(investment) {
+          let sitesCount = 0
+          arrSites.forEach((site) => {
+            let sum = site.sponsor.reduce(
+              (total, sponsorInvestment) => total + sponsorInvestment.deposit,
+              0
+            )
+            if (sum > investment) sitesCount++
+          })
+          return sitesCount
+        }
+
+        document.write(
+          `Кількість сайтів, де сума спонсорських вкладень була більшою за 100000 становить: ${investmentMore100Thousands(
+            100000
+          )}<br><br>`
+        )
+
+        // 4) створити загальний список усіх спонсорів (поки можуть повторюватись, просто зібрати усі у масив)
+        let sponsorsArr = arrSites.flat()
+        let sponsorList = arrSites.map((site) =>
+          site.sponsor.map(
+            (person) => person.firstName + ' ' + person.secondName
+          )
+        )
+        document.write(`Список усіх спонсорів:<br> ${sponsorList} <br><br>`)
+
+        // 5) знайти рік, коли прибуток був найбільшим
+
+        let biggestProfit = arrSites.reduce((maxProfit, profit) => {
+          return profit.price > maxProfit.price ? profit : maxProfit
+        })
+        document.write(
+          `Рік, коли прибуток був найбільшим: ${biggestProfit.year}<br><br>`
+        )
+      </script>
+    </div>
+    <div class="btn">
+      <a class="button" href="./index.html">На головну</a>
+    </div>
+  </body>
+</html>
